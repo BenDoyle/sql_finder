@@ -1,0 +1,83 @@
+grammar SimpleSQL
+  
+  rule statement
+    select required_space from
+  end
+  
+  rule from
+    'from' required_space item_with_alias
+  end
+
+  rule join
+    'join' required_space item_with_alias required_space join_expressions
+  end
+
+  rule join_expressions
+    join_expression space ',' space join_expressions
+    /
+    join_expression
+  end
+
+  rule join_expression
+    'on' 
+  end
+
+
+  rule conditional_items
+    conditional_item required_space boolean_join required_space conditional_items 
+    /
+    conditional_item
+  end
+
+  rule boolean_join
+    ('and' / 'or') 
+  end
+
+  rule conditional_item
+    text_label space conditional_operator space text_label 
+  end
+
+  rule conditional_operator
+    ('<>' / '>=' / '<=' / '=' / '>' / '<') 
+  end
+
+
+
+
+
+
+  
+  rule select
+    'select' required_space items
+  end
+  
+  rule items
+    item_with_alias space ',' space items
+    /
+    item_with_alias
+  end
+
+  rule item_with_alias
+    !keyword text_label alias?
+  end
+
+  rule alias
+    (required_space 'as')? required_space text_label
+  end
+
+  rule text_label
+    [a-z_0-9*\.]+
+  end
+
+  rule keyword
+    'select' / 'from' / 'join'
+  end
+
+  rule space
+    ' '*
+  end
+
+  rule required_space
+    ' '+
+  end
+end
